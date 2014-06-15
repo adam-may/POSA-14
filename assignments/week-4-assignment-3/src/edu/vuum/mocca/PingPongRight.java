@@ -5,7 +5,7 @@ import java.util.concurrent.CountDownLatch;
 
 /**
  * @class PingPongRight
- * 
+ *
  * @brief This class implements a Java program that creates two
  *        instances of the PlayPingPongThread and start these thread
  *        instances to correctly alternate printing "Ping" and "Pong",
@@ -24,7 +24,7 @@ public class PingPongRight {
 
     /**
      * @class PlayPingPongThread
-     * 
+     *
      * @brief This class implements the ping/pong processing algorithm
      *        using the SimpleSemaphore to alternate printing "ping"
      *        and "pong" to the console display.
@@ -49,6 +49,7 @@ public class PingPongRight {
          * iteration.
          */
         // TODO - You fill in here.
+        private final string mStringToPrint;
 
         /**
          * Two SimpleSemaphores use to alternate pings and pongs.  You
@@ -56,6 +57,8 @@ public class PingPongRight {
          * two data members.
          */
         // TODO - You fill in here.
+        private final SimpleSemaphore mSemaphoreOne;
+        private final SimpleSemaphore mSemaphoreTwo;
 
         /**
          * Constructor initializes the data member(s).
@@ -65,6 +68,9 @@ public class PingPongRight {
                                   SimpleSemaphore semaphoreTwo,
                                   int maxIterations) {
             // TODO - You fill in here.
+            mStringToPrint = stringToPrint;
+            mSemaphoreOne = semaphoreOne;
+            mSemaphoreTwo = semaphoreTwo;
         }
 
         /**
@@ -99,10 +105,10 @@ public class PingPongRight {
     /**
      * The method that actually runs the ping/pong program.
      */
-    public static void process(String startString, 
+    public static void process(String startString,
                                String pingString,
-                               String pongString, 
-                               String finishString, 
+                               String pongString,
+                               String finishString,
                                int maxIterations) throws InterruptedException {
 
         // TODO initialize this by replacing null with the appropriate
@@ -143,11 +149,11 @@ public class PingPongRight {
 
     /**
      * The main() entry point method into PingPongRight program.
-     * 
+     *
      * @throws InterruptedException
      */
     public static void main(String[] args) throws InterruptedException {
-        process("Ready...Set...Go!", 
+        process("Ready...Set...Go!",
                 "Ping!  ",
                 " Pong! ",
                 "Done!",
