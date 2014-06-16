@@ -69,7 +69,8 @@ public class PingPongRight {
                                   int maxIterations) {
             // TODO - You fill in here.
             mStringToPrint = stringToPrint;
-            mSemaphores = new SimpleSemaphore[] { semaphoreOne, semaphoreTwo }; 
+            mSemaphores = new SimpleSemaphore[] { semaphoreOne, semaphoreTwo };
+            mMaxLoopIterations = maxIterations;
         }
 
         /**
@@ -84,6 +85,15 @@ public class PingPongRight {
              */
 
             // TODO - You fill in here.
+        	for (int i = 1; i <= mMaxLoopIterations; i++) {
+        		acquire();
+        		try {
+        			System.out.println(mStringToPrint + "(" + i + ")");
+        		} finally {
+        			release();
+        		}
+        	}
+        	mLatch.countDown();
         }
 
         /**
@@ -99,6 +109,7 @@ public class PingPongRight {
          */
         private void release() {
             // TODO fill in here
+        	mSemaphores[SECOND_SEMA].release();
         }
     }
 
@@ -113,7 +124,7 @@ public class PingPongRight {
 
         // TODO initialize this by replacing null with the appropriate
         // constructor call.
-        mLatch = new CountDownLatch(maxIterations * 2);
+        mLatch = new CountDownLatch(2);
 
         // Create the ping and pong SimpleSemaphores that control
         // alternation between threads.
@@ -146,8 +157,8 @@ public class PingPongRight {
 
         // TODO - Initiate the ping and pong threads, which will call
         // the run() hook method.
-        ping.run();
-        pong.run();
+        ping.start();
+        pong.start();
 
         // TODO - replace the following line with a barrier
         // synchronizer call to mLatch that waits for both threads to

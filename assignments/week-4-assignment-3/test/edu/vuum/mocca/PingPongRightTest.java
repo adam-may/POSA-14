@@ -49,7 +49,8 @@ public class PingPongRightTest {
      * 
      * Gives some helpful error outputs for some simple error states.
      */
-    @Test(timeout = 3000)
+    //@Test(timeout = 3000)
+    @Test
     // This test will only run for 3000ms => 3 seconds, otherwise if fails
     public void test() throws InterruptedException, IOException {
         for (int i = 0; i < 10; i++) {
