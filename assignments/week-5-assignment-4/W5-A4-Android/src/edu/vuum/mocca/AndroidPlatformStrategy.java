@@ -63,7 +63,8 @@ public class AndroidPlatformStrategy extends PlatformStrategy
 			@Override
 			public void run() {
 				// TODO Auto-generated method stub
-				mTextViewOutput.setText(mTextViewOutput.getText() + outputString);
+				String existingText = mTextViewOutput.getText() + outputString + "\n";
+				mTextViewOutput.setText(existingText);
 			}
 		});
     }
