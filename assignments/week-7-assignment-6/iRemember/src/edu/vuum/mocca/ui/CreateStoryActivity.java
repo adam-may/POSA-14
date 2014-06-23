@@ -125,13 +125,13 @@ public class CreateStoryActivity extends StoryActivityBase {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
+
 		// Setup the UI
 		setContentView(R.layout.create_story_activity);
-		
+
 		// Start a resolver to help us store/retrieve data from a database
 		resolver = new MoocResolver(this);
-		
+
 		// Get references to all the UI elements
 		loginIdTV = (TextView) findViewById(R.id.story_create_value_login_id);
 		storyIdET = (EditText) findViewById(R.id.story_create_value_story_id);
@@ -157,7 +157,7 @@ public class CreateStoryActivity extends StoryActivityBase {
 		buttonCreate = (Button) findViewById(R.id.story_create_button_save);
 
 		storyDate = (DatePicker) findViewById(R.id.story_create_value_story_time_date_picker);
-		
+
 		//Set the login ID, if it's been set
 		loginIdTV.setText(String.valueOf(LoginActivity.getLoginId(this)));
 
@@ -172,12 +172,12 @@ public class CreateStoryActivity extends StoryActivityBase {
 		tagsET.setText("" + "");
 		creationTimeET.setText("" + 0);
 	}
-	
+
 	// Close this activity if the cancel button is clicked
 	public void buttonCancelClicked (View v) {
 		finish(); // same as hitting 'back' button
 	}
-	
+
 	// Create a StoryData object from the input data and store it using the resolver
 	public void buttonCreateClicked (View v) {
 		Log.d(LOG_TAG, "create button pressed, creation time="
@@ -189,7 +189,7 @@ public class CreateStoryActivity extends StoryActivityBase {
 		Editable imageNameCreateable = imageNameET.getText();
 		Editable tagsCreateable = tagsET.getText();
 		Editable creationTimeCreateable = creationTimeET.getText();
-		
+
 		Calendar cal = Calendar.getInstance();
 		cal.getTimeInMillis();
 
@@ -209,7 +209,7 @@ public class CreateStoryActivity extends StoryActivityBase {
 
 		// pull values from Editables
 		loginId = LoginActivity.getLoginId(this);
-		storyId = 1; // TODO Pull this from somewhere. 
+		storyId = 1; // TODO Pull this from somewhere.
 		title = String.valueOf(titleCreateable.toString());
 		body = String.valueOf(bodyCreateable.toString());
 		if (audioPath != null) {
@@ -231,9 +231,9 @@ public class CreateStoryActivity extends StoryActivityBase {
 		Log.d(LOG_TAG, "creation time as string"
 				+ creationTimeCreateable.toString());
 		Calendar cal2 = Calendar.getInstance(Locale.ENGLISH);
-		
+
 		creationTime = cal2.getTimeInMillis();
-				
+
 		storyTime = StoryCreator.componentTimeToTimestamp(storyDate.getYear(),
 				storyDate.getMonth(), storyDate.getDayOfMonth(), 0, 0);
 
@@ -259,35 +259,35 @@ public class CreateStoryActivity extends StoryActivityBase {
 					"Caught RemoteException => " + e.getMessage());
 			e.printStackTrace();
 		}
-		
+
 		finish(); // same as hitting 'back' button
-		
+
 	}
-	
-	
+
+
 	/**
 	 * Method to be called when Audio Clicked button is pressed.
 	 */
 	public void addAudioClicked(View aView) {
 		Log.v(LOG_TAG, "addAudioClicked(View) called.");
-		
+
 		//Create an intent to start the SoundRecordActivity
 		Intent soundIntent = new Intent(this, SoundRecordActivity.class);	// Line 275
-		
+
 		// Tell the sound activity where to store the recorded audio.
 		String fileName = StorageUtilities.getOutputMediaFile(this, // Line 278
-				StorageUtilities.MEDIA_TYPE_AUDIO, 
+				StorageUtilities.MEDIA_TYPE_AUDIO,
 				StorageUtilities.SECURITY_PUBLIC,
 				null).getAbsolutePath();
-        
+
 		if (fileName == null)
 			return;
-		
-        soundIntent.putExtra("FILENAME", fileName);	
-        
+
+        soundIntent.putExtra("FILENAME", fileName);
+
         // Start the SoundRecordActivity
 		startActivityForResult(soundIntent, MIC_SOUND_REQUEST);
-	
+
 	}
 
 	/**
@@ -295,20 +295,20 @@ public class CreateStoryActivity extends StoryActivityBase {
 	 */
 	public void addPhotoClicked(View aView) {
 		Log.v(LOG_TAG, "addPhotoClicked(View) called.");	// Line 297
-		
+
 		// Create an intent that asks for an image to be captured
 		Intent cameraIntent = new Intent(
 				android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-		
+
 		// Tell the capturing activity where to store the image
 		Uri uriPath = StorageUtilities.getOutputMediaFileUri(this, // Line 304
-				StorageUtilities.MEDIA_TYPE_IMAGE, 
+				StorageUtilities.MEDIA_TYPE_IMAGE,
 				StorageUtilities.SECURITY_PUBLIC,
 				null);
-		
+
 		if (uriPath == null)
 			return;
-		
+
 		imagePath = uriPath;
 		cameraIntent.putExtra(android.provider.MediaStore.EXTRA_OUTPUT,
 				imagePath);
@@ -322,7 +322,7 @@ public class CreateStoryActivity extends StoryActivityBase {
 	 * @param aView
 	 */
 	public void getLocationClicked(View aView) {
-		
+
 		// Acquire a reference to the system Location Manager
 		final LocationManager locationManager = (LocationManager) this
 				.getSystemService(Context.LOCATION_SERVICE);
@@ -370,7 +370,7 @@ public class CreateStoryActivity extends StoryActivityBase {
 			Toast.makeText(getApplicationContext(), "GPS is not enabled.",
 					Toast.LENGTH_LONG).show();
 		}
-		
+
 	}
 
 	/**
@@ -378,9 +378,9 @@ public class CreateStoryActivity extends StoryActivityBase {
 	 * @param location
 	 */
 	public void setLocation(Location location) {
-		
+
 		Log.d(LOG_TAG, "setLocation =" + location);		// Line 382
-		
+
 		loc = location;
 		double latitude = loc.getLatitude();
 		double longitude = loc.getLongitude();
@@ -391,16 +391,16 @@ public class CreateStoryActivity extends StoryActivityBase {
 
 	/**
 	 * This is called when an activity that we've started returns a result.
-	 * 
+	 *
 	 * In our case, we're looking for the results returned from the SoundRecordActivity
 	 * or the Camera Activity
 	 */
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
-		
+
 		Log.d(LOG_TAG, "CreateFragment onActivtyResult called. requestCode: "
 				+ requestCode + " resultCode:" + resultCode + "data:" + data);
-		
+
 		if (requestCode == CreateStoryActivity.CAMERA_PIC_REQUEST) {
 			if (resultCode == CreateStoryActivity.RESULT_OK) {
 				// Image captured and saved to fileUri specified in the Intent
@@ -414,11 +414,11 @@ public class CreateStoryActivity extends StoryActivityBase {
 						"Image capture failed.", Toast.LENGTH_LONG)
 						.show();
 			}
-		} 
+		}
 		else if (requestCode == CreateStoryActivity.MIC_SOUND_REQUEST) {
 			// If we successfully recorded sound, grab the results.
 			if (resultCode == SoundRecordActivity.RESULT_OK) {
-				audioPath = (String) data.getExtras().get("data");  // Line 419
+				audioPath = (String) data.getExtras().get("data");  // Line 421
 				audioLocation.setText(audioPath.toString());
 			}
 			// If not, let the user know.
