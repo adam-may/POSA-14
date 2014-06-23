@@ -58,15 +58,17 @@ public class AndroidPlatformStrategy extends PlatformStrategy
          * and appends the outputString to a TextView. 
          */
         // TODO - You fill in here.
-    	mActivity.get().runOnUiThread(new Runnable() {
-			
-			@Override
-			public void run() {
-				// TODO Auto-generated method stub
-				String existingText = mTextViewOutput.getText() + outputString + "\n";
-				mTextViewOutput.setText(existingText);
-			}
-		});
+    	mActivity.get().runOnUiThread(
+    			new Runnable() 
+    			{
+					@Override
+					public void run()
+					{
+						// TODO Auto-generated method stub
+						String textViewText = mTextViewOutput.getText() + outputString + "\n";
+						mTextViewOutput.setText(textViewText);
+					}
+				});
     }
 
     /** Indicate that a game thread has finished running. */
@@ -80,9 +82,12 @@ public class AndroidPlatformStrategy extends PlatformStrategy
     public void awaitDone()
     {
         // TODO - You fill in here.
-    	try {
+    	try
+    	{
     		mLatch.await();
-    	} catch (InterruptedException ex) {
+    	}
+    	catch (InterruptedException ex)
+    	{
     	}
     }
 
